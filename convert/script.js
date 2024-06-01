@@ -12,6 +12,7 @@ convertButton.addEventListener('click', async () => {
   if (message.length < 56)
     {
       alert('Token can be only 56 characters long!')
+      return;
     }
 
   // Replace message with asterisks for display
