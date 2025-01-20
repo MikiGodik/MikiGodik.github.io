@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Czech Republic Time and Date</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #121212; /* Dark background */
+      color: #fff; /* White text */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .clock-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .circle-line {
+      position: absolute;
+      width: 5px; /* Line width */
+      height: 15px; /* Line length */
+      background-color: #666; /* Gray-ish line color */
+      left: 50%;
+      top: 50%;
+      transform-origin: 50% 100%; /* Rotate around the bottom center of the line */
+      border-radius: 5px;
+      transition: background-color 0.5s ease; /* Add transition for smooth color change */
+    }
+    .info-container {
+      position: absolute;
+      text-align: center;
+      color: #fff;
+    }
+    .time-container {
+        text-align: center;
+        margin-top: 15px;
+      font-size: 4.5em;
+      margin-bottom: 9px; /* Add margin to separate time and date */
+      color: #666;
+      transition: color 0.5s ease;
+    }
+    .date-container {
+      font-size: 1.05em; /* Smaller font size for date and day */
+      color: #666;
+      transition: color 0.5s ease;
+    }
+    .date-container #date {
+        margin-right: 12px;
+    }
+    .change-animation {
+        animation: pulse 0.3s ease-in-out;
+    }
+
+    /* Keyframes for the animation */
+    @keyframes pulse {
+        0% { transform: scale(1);  } 
+        50% { transform: scale(1.1);  } 
+        100% { transform: scale(1);  } 
+    }
+  </style>
+</head>
+<body>
+
+  <div class="clock-container">
+    <div class="info-container">
+      <div class="time-container">
+        <span id="time"></span>
+      </div>
+
+      <div class="date-container">
+        <span id="date"></span>
+        <span id="day"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Create the circle lines
+    const clockContainer = document.querySelector(".clock-container");
+    for (let i = 0; i < 60; i++) {
+      const line = document.createElement("div");
+      line.classList.add("circle-line");
+      line.style.transform = `rotate(${i * 6}deg) translateY(-135px)`; // 6 degrees per line
+      clockContainer.appendChild(line);
+    }
+
+    let lastTime = null; // Variable to track the last displayed time
+    let lastDate = null; // Variable to track the last displayed date
+
+    function updateTimeAndDate() {
+      const now = new Date();
+      const czechTime = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Prague" }));
+
+      // Time
+      const hours = czechTime.getHours().toString().padStart(2, '0');
+      const minutes = czechTime.getMinutes().toString().padStart(2, '0');
+      const seconds = czechTime.getSeconds();
+      const timeString = `${hours}:${minutes}`;
+
+      // Date
+      const year = czechTime.getFullYear();
+      const month = (czechTime.getMonth() + 1).toString().padStart(2, '0');
+      const day = czechTime.getDate().toString().padStart(2, '0');
+      const dateString = `${year}-${month}-${day}`;
+
+      // Day of the week
+      const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const dayOfWeek = daysOfWeek[czechTime.getDay()];
+
+      // Update time display
+      const timeElement = document.getElementById("time");
+      timeElement.textContent = timeString;
+
+      // Add animation class to time if time has changed
+      if (timeString !== lastTime) {
+          timeElement.classList.add("change-animation");
+          setTimeout(() => timeElement.classList.remove("change-animation"), 550); // Remove the class after the animation duration
+          lastTime = timeString;
+      }
+
+      // Add animation class to date and day if date has changed
+      const dateElement = document.getElementById("date");
+      const dayElement = document.getElementById("day");
+      if (dateString !== lastDate) {
+          dateElement.classList.add("change-animation");
+          dayElement.classList.add("change-animation");
+          setTimeout(() => {
+              dateElement.classList.remove("change-animation");
+              dayElement.classList.remove("change-animation");
+          }, 550); // Remove the class after the animation duration
+          lastDate = dateString;
+      }
+
+      // Update date and day elements
+      document.getElementById("date").textContent = dateString;
+      document.getElementById("day").textContent = dayOfWeek;
+
+      // Highlight lines based on seconds
+      const lines = document.querySelectorAll(".circle-line");
+      lines.forEach((line, index) => {
+        if (index < seconds) {
+          line.style.backgroundColor = "#eee"; // White-ish color for elapsed seconds
+        } else {
+          line.style.backgroundColor = "#666"; // Default gray-ish color
+        }
+      });
+
+      // Calculate color based on the current second
+      const colorIntensity = Math.round(102 + (seconds / 59) * (255 - 102)); // 102 is the decimal equivalent of #666, 255 is the decimal equivalent of #fff
+      const dynamicColor = `rgb(${colorIntensity}, ${colorIntensity}, ${colorIntensity})`;
+
+      // Apply the dynamic color to the time and date containers
+      const timeContainer = document.querySelector(".time-container");
+      const dateContainer = document.querySelector(".date-container");
+      timeContainer.style.color = dynamicColor;
+      dateContainer.style.color = dynamicColor;
+
+      // Reset transitions
+      if (seconds === 0) {
+        timeContainer.style.transition = 'none';
+        dateContainer.style.transition = 'none';
+        // Force a reflow to ensure the transition 'none' is applied immediately
+        void timeContainer.offsetWidth;
+        void dateContainer.offsetWidth;
+        // Re-enable transitions
+        timeContainer.style.transition = 'color 0.5s ease';
+        dateContainer.style.transition = 'color 0.5s ease';
+      }
+    }
+
+    setInterval(updateTimeAndDate, 1000);
+    updateTimeAndDate();
+  </script>
+
+</body>
+</html>
