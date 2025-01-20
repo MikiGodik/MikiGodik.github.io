@@ -140,6 +140,21 @@
       max-width: 800px;
       margin: 0 auto;
     }
+
+    @keyframes elasticScale {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0.1);
+      opacity: 0;
+    }
+  }
+
+  /* Apply the animation to the loading-container */
+  .loading-container.scale-down {
+    animation: elasticScale 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  }
   </style>
 </head>
 <body>
@@ -165,26 +180,35 @@
   </div>
 
   <script>
-    // After 3 seconds, hide the loading animation and show the content with smooth "pop-in"
+  setTimeout(() => {
+    const loadingContainer = document.querySelector(".loading-container");
+    const content = document.querySelector(".content");
+
+    // Apply the scaling animation
+    loadingContainer.classList.add("scale-down");
+
+    // Wait for the animation to complete (1 second), then hide the loading animation and show content
     setTimeout(() => {
-      document.querySelector(".loading-container").style.display = 'none';
-      document.querySelector(".content").classList.add('visible');
-      document.querySelector(".go-back-arrow").classList.add('show'); // Show the go back arrow
-    }, 3000);
+      loadingContainer.style.display = "none";
+      content.classList.add("visible");
+    }, 1000); // Match the duration of the elasticScale animation
+  }, 3000);
+  
     function goBack() {
-    // Initially hide content and go-back-arrow
-    document.querySelector(".content").classList.remove('visible');
-    document.querySelector(".go-back-arrow").classList.remove('show');
-
-    // Show loading animation again
-    document.querySelector(".loading-container").style.display = 'flex';
-
-    // Delay navigation to allow time for the loading animation to appear
-    setTimeout(() => {
-      history.back(); // Go back after the delay
-    }, 3000); // Delay for 1.5 seconds
-  }
+      // Initially hide content and go-back-arrow
+      document.querySelector(".content").classList.remove('visible');
+      document.querySelector(".go-back-arrow").classList.remove('show');
+  
+      // Show loading animation again
+      document.querySelector(".loading-container").style.display = 'flex';
+  
+      // Delay navigation to allow time for the loading animation to appear
+      setTimeout(() => {
+        history.back(); // Go back after the delay
+      }, randomDelay); // Use the same random delay
+    }
   </script>
+  
 
 </body>
 </html>
