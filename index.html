@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #121212; /* Dark background */
+      color: #fff; /* White text */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden; /* Hide overflow while loading */
+      position: relative; /* Needed for positioning the arrow */
+    }
+
+    /* Go back arrow style */
+    .go-back-arrow {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      z-index: 100; /* Ensure it stays above other content */
+      opacity: 0; /* Initially hidden */
+      visibility: hidden; /* Initially hidden */
+      transition: opacity 1s ease, visibility 1s ease; /* Smooth appearance */
+    }
+
+    .go-back-arrow.show {
+      opacity: 1;
+      visibility: visible; /* Make visible after the animation */
+    }
+
+    .go-back-arrow:hover {
+      transform: scale(1.1); /* Slight scaling effect on hover */
+    }
+
+    /* Loading animation */
+    .loading-container {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100px;
+      height: 100px;
+      animation: rotateContainer 3s ease-in-out forwards;
+    }
+
+    .dot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #fff;
+      opacity: 0;
+      animation: fadeInOut 2s ease-in-out infinite, dotMotion 2s ease-in-out infinite;
+    }
+
+    .dot:nth-child(1) {
+      top: 0;
+      left: 50%;
+      animation-delay: 0s, 0s;
+    }
+
+    .dot:nth-child(2) {
+      top: 50%;
+      left: 100%;
+      animation-delay: 0.2s, 0.5s;
+    }
+
+    .dot:nth-child(3) {
+      bottom: 0;
+      left: 50%;
+      animation-delay: 0.4s, 1s;
+    }
+
+    .dot:nth-child(4) {
+      top: 50%;
+      left: 0;
+      animation-delay: 0.6s, 1.5s;
+    }
+
+    @keyframes rotateContainer {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes dotMotion {
+      0% { transform: scale(1) translateX(0) translateY(0); }
+      25% { transform: scale(1.5) translateX(20px) translateY(-20px); }
+      50% { transform: scale(1) translateX(0) translateY(0); }
+      75% { transform: scale(1.5) translateX(-20px) translateY(20px); }
+      100% { transform: scale(1) translateX(0) translateY(0); }
+    }
+
+    /* Page content hidden initially */
+    .content {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.9);
+      transition: opacity 1s ease, transform 1s ease;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .content.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+
+    .line {
+      border-top: 2px solid #fff;
+      width: 80%;
+      margin: 20px auto;
+    }
+
+    p {
+      font-size: 1.2em;
+      line-height: 1.6;
+      color: #bbb;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Island nav bar */
+    .island-nav {
+      position: fixed; /* Visible at the top of the page */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 33px;
+      background-color: #181818;
+      border-radius: 0 0 25px 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 20px;
+      z-index: 100;
+      box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5);
+      animation: slideIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; /* Smooth easing */
+    }
+
+    .island-nav a {
+      color: #eee;
+      text-decoration: none;
+      font-size: 1.1em;
+      margin: 0 10px;
+      transition: transform 0.3s ease, color 0.3s ease; /* Smooth hover effects */
+    }
+
+    .island-nav a:hover {
+      color: #666;
+      transform: scale(1.05); /* Slightly enlarge link */
+    }
+
+    .island-nav:hover {
+      background-color: #202020; /* Subtle color change on hover */
+      transition: background-color 0.8s ease; /* Smooth transition when hovering out */
+    }
+
+    @keyframes slideIn {
+      0% { top: -80px; } /* Start off-screen */
+      100% { top: 0px; } /* Slide into view */
+    }
+    .atmx {
+      width: 200px;
+      height: 200px;
+      position: relative; /* Ensure the top property works */
+      top: 20px; /* Adjust this value to bring the image closer */
+  }
+  </style>
+</head>
+<body>
+
+  <!-- Island Navigation Bar -->
+  <div class="island-nav">
+    <a href="#">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="time.html">Our Time</a>
+  </div>
+
+
+  <!-- Loading animation -->
+  <div class="loading-container">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+
+  <!-- Page content hidden initially -->
+  <div class="content">
+    <img src="Icons/atmx.png" class="atmx">
+    <div class="line"></div>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lacinia nunc. Vestibulum lacinia, urna et congue pretium, arcu lorem gravida purus, non maximus mi libero ac velit. Curabitur id lectus non turpis congue condimentum. Integer non sapien et purus sollicitudin cursus. Nulla facilisi. Sed varius odio at ante auctor, ut fringilla libero volutpat. Aliquam erat volutpat. Quisque ut metus ac libero varius aliquet non id risus. Ut sed nunc vitae ante condimentum suscipit.
+    </p>
+  </div>
+
+  <script>
+    // After 3 seconds, hide the loading animation and show the content with smooth "pop-in"
+    setTimeout(() => {
+      document.querySelector(".loading-container").style.display = 'none';
+      document.querySelector(".content").classList.add('visible');
+      document.querySelector(".go-back-arrow").classList.add('show');
+    }, 3000);
+  </script>
+
+</body>
+</html>
