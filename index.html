@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NitroSnipe — Premium Discord Nitro Balance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+  /* ─── Reset & Base ─────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── CSS Variables ─────────────────────────────────────────────── */
+  :root {
+    --white: #ffffff;
+    --gray-50: #f5f5f7;
+    --gray-100: #e8e8ed;
+    --gray-200: #d2d2d7;
+    --gray-300: #aeaeb2;
+    --gray-500: #6e6e73;
+    --gray-700: #3a3a3c;
+    --gray-900: #1d1d1f;
+    --blue: #0071e3;
+    --blue-hover: #0077ed;
+    --blue-light: #e8f4fd;
+    --blue-mid: #b3d9f8;
+    --nitro: #5865f2;
+    --nitro-light: #eef0fe;
+    --nitro-hover: #4752c4;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+    --shadow-xl: 0 20px 60px rgba(0,0,0,0.12);
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+  }
+
+  /* ─── Typography ────────────────────────────────────────────────── */
+  .t-display { font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; }
+  .t-title   { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+  .t-section { font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 600; letter-spacing: -0.015em; }
+  .t-body    { font-size: 1.0625rem; font-weight: 400; color: var(--gray-500); line-height: 1.7; }
+  .t-caption { font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-300); }
+
+  /* ─── Layout ────────────────────────────────────────────────────── */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .container-wide { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 100px 0; }
+
+  /* ─── Navigation ────────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(245,245,247,0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    height: 52px;
+    display: flex; align-items: center;
+    transition: background 0.3s ease;
+  }
+  nav.scrolled { background: rgba(255,255,255,0.92); }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 24px;
+  }
+  .nav-logo {
+    font-size: 1rem; font-weight: 700; color: var(--gray-900);
+    text-decoration: none; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-logo .logo-icon {
+    width: 24px; height: 24px; background: var(--nitro);
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo .logo-icon i { color: white; font-size: 12px; }
+  .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 0.8125rem; font-weight: 400; color: var(--gray-700);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gray-900); }
+  .nav-cta {
+    font-size: 0.8125rem; font-weight: 500;
+    background: var(--blue); color: white;
+    padding: 6px 16px; border-radius: 980px; text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--blue-hover); transform: scale(1.02); }
+  .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+
+  /* ─── Hero ──────────────────────────────────────────────────────── */
+  .hero {
+    padding: 140px 0 80px;
+    background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(ellipse at center, rgba(88,101,242,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--nitro-light); color: var(--nitro);
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 980px;
+    margin-bottom: 28px;
+    border: 1px solid rgba(88,101,242,0.15);
+    opacity: 0; animation: fadeUp 0.6s ease 0.1s forwards;
+  }
+  .hero-headline {
+    margin-bottom: 12px;
+    opacity: 0; animation: fadeUp 0.7s ease 0.25s forwards;
+  }
+  .hero-headline .counter-wrap {
+    display: inline-flex; align-items: baseline; gap: 0;
+  }
+  .hero-headline .count-num {
+    color: var(--nitro); font-variant-numeric: tabular-nums;
+    display: inline-block; min-width: 3ch; text-align: right;
+  }
+  .hero-sub {
+    font-size: 1.125rem; color: var(--gray-500); max-width: 520px; margin: 20px auto 0;
+    opacity: 0; animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+  .hero-actions {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-top: 40px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.7s ease 0.55s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue); color: white;
+    font-size: 1rem; font-weight: 500; padding: 14px 28px;
+    border-radius: 980px; text-decoration: none;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(0,113,227,0.25);
+  }
+  .btn-primary:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(0,113,227,0.3); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--blue); font-size: 1rem; font-weight: 500;
+    text-decoration: none; transition: gap 0.2s;
+  }
+  .btn-secondary:hover { gap: 10px; }
+  .hero-stat-row {
+    display: flex; align-items: center; justify-content: center; gap: 48px;
+    margin-top: 64px; padding-top: 48px;
+    border-top: 0.5px solid var(--gray-100);
+    opacity: 0; animation: fadeUp 0.7s ease 0.7s forwards;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-size: 2rem; font-weight: 700; color: var(--gray-900); letter-spacing: -0.03em; }
+  .hero-stat .lbl { font-size: 0.8125rem; color: var(--gray-500); margin-top: 2px; }
+
+  /* ─── How It Works Cards ─────────────────────────────────────────── */
+  .how-section { background: var(--gray-50); }
+  .how-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px; margin-top: 56px;
+  }
+  .how-card {
+    background: var(--white); border-radius: var(--radius-lg);
+    padding: 32px 28px; border: 0.5px solid var(--gray-100);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    opacity: 0; transform: translateY(20px);
+  }
+  .how-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s ease; }
+  .how-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .how-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px; font-size: 18px;
+  }
+  .how-icon.purple { background: var(--nitro-light); color: var(--nitro); }
+  .how-icon.blue   { background: var(--blue-light); color: var(--blue); }
+  .how-icon.green  { background: #e8f9ee; color: #1a7f37; }
+  .how-icon.amber  { background: #fff4e5; color: #b45309; }
+  .how-card h3 { font-size: 1.0625rem; font-weight: 600; margin-bottom: 10px; color: var(--gray-900); }
+  .how-card p  { font-size: 0.9375rem; color: var(--gray-500); line-height: 1.65; }
+
+  /* ─── Services Section ───────────────────────────────────────────── */
+  .services-section { background: var(--white); }
+  .section-header { margin-bottom: 56px; }
+  .section-header .t-caption { margin-bottom: 10px; }
+  .featured-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    border: 0.5px solid var(--gray-100);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 440px;
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .featured-card.visible { opacity: 1; transform: translateY(0); }
+  .featured-left {
+    padding: 56px 48px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .featured-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--nitro-light); color: var(--nitro);
+    font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 980px; margin-bottom: 28px;
+    width: fit-content;
+  }
+  .featured-left h2 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 16px; }
+  .featured-left p  { font-size: 1rem; color: var(--gray-500); line-height: 1.7; max-width: 380px; margin-bottom: 36px; }
+  .featured-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .btn-nitro {
+    background: var(--nitro); color: white;
+    font-size: 0.9375rem; font-weight: 500; padding: 12px 24px;
+    border-radius: 980px; text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 14px rgba(88,101,242,0.3);
+  }
+  .btn-nitro:hover { background: var(--nitro-hover); transform: translateY(-1px); }
+  .btn-link { color: var(--nitro); font-size: 0.9375rem; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s; }
+  .btn-link:hover { gap: 8px; }
+
+  .featured-right {
+    background: linear-gradient(135deg, #f0f1fe 0%, #e8f4fd 100%);
+    display: flex; align-items: center; justify-content: center; padding: 48px;
+    position: relative;
+  }
+  .balance-widget {
+    background: var(--white); border-radius: var(--radius-lg);
+    padding: 32px 28px; box-shadow: var(--shadow-xl);
+    width: 280px; position: relative;
+  }
+  .balance-widget .bw-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-300); margin-bottom: 16px; }
+  .balance-widget .bw-amount { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+  .balance-widget .bw-num { font-size: 3rem; font-weight: 700; color: var(--gray-900); letter-spacing: -0.04em; }
+  .balance-widget .bw-unit { font-size: 1.25rem; font-weight: 500; color: var(--gray-700); }
+  .balance-widget .bw-sub { font-size: 0.8125rem; color: var(--gray-500); margin-bottom: 20px; }
+  .balance-bar { height: 4px; background: var(--gray-100); border-radius: 2px; margin-bottom: 20px; overflow: hidden; }
+  .balance-bar-fill { height: 100%; width: 65%; background: linear-gradient(90deg, var(--nitro), var(--blue)); border-radius: 2px; }
+  .balance-row { display: flex; align-items: center; justify-content: space-between; }
+  .balance-row .br-label { font-size: 0.8125rem; color: var(--gray-500); }
+  .balance-row .br-value { font-size: 0.8125rem; font-weight: 600; color: var(--gray-900); }
+
+  .coming-soon-tag {
+    position: absolute; top: 24px; right: -8px;
+    background: var(--gray-900); color: white;
+    font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: var(--radius-sm);
+  }
+  .coming-soon-tag::after {
+    content: ''; position: absolute; bottom: -5px; right: 8px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--gray-900);
+  }
+
+  .services-more {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; margin-top: 20px;
+  }
+  .service-stub {
+    border: 0.5px dashed var(--gray-200); border-radius: var(--radius-lg);
+    padding: 32px 28px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+    opacity: 0.5;
+  }
+  .service-stub .stub-icon { font-size: 20px; color: var(--gray-300); }
+  .service-stub p { font-size: 0.875rem; color: var(--gray-300); }
+
+  /* ─── Loyalty / Credits ──────────────────────────────────────────── */
+  .loyalty-section { background: var(--gray-50); }
+  .loyalty-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; margin-top: 56px; align-items: start;
+  }
+  .loyalty-visual {
+    background: var(--white); border-radius: var(--radius-xl);
+    padding: 40px; border: 0.5px solid var(--gray-100); box-shadow: var(--shadow-md);
+  }
+  .tier-cards { display: flex; flex-direction: column; gap: 12px; }
+  .tier-card {
+    border-radius: var(--radius-md); padding: 20px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    border: 0.5px solid transparent;
+  }
+  .tier-card.bronze { background: #fdf8f0; border-color: #e8d5b7; }
+  .tier-card.silver { background: #f6f6f8; border-color: #d2d2d7; }
+  .tier-card.gold   { background: #fffbeb; border-color: #fcd34d; }
+  .tier-card.diamond { background: var(--nitro-light); border-color: rgba(88,101,242,0.25); }
+  .tier-left { display: flex; align-items: center; gap: 14px; }
+  .tier-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .tier-icon.b { background: #f3e8d5; color: #92400e; }
+  .tier-icon.s { background: #e5e5ea; color: #636366; }
+  .tier-icon.g { background: #fef3c7; color: #b45309; }
+  .tier-icon.d { background: var(--nitro-light); color: var(--nitro); }
+  .tier-name { font-size: 0.9375rem; font-weight: 600; color: var(--gray-900); }
+  .tier-req  { font-size: 0.8125rem; color: var(--gray-500); }
+  .tier-bonus { font-size: 0.9375rem; font-weight: 600; color: var(--nitro); }
+  .loyalty-text { display: flex; flex-direction: column; justify-content: center; }
+  .loyalty-perks { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+  .loyalty-perks li { display: flex; align-items: flex-start; gap: 12px; }
+  .perk-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--nitro-light); color: var(--nitro); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+  .perk-text h4 { font-size: 0.9375rem; font-weight: 600; color: var(--gray-900); }
+  .perk-text p  { font-size: 0.875rem; color: var(--gray-500); margin-top: 2px; }
+
+  /* ─── Testimonials ───────────────────────────────────────────────── */
+  .testimonials-section { background: var(--white); }
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px; margin-top: 56px;
+  }
+  .testi-card {
+    background: var(--gray-50); border-radius: var(--radius-lg);
+    padding: 28px 24px; border: 0.5px solid var(--gray-100);
+    display: flex; flex-direction: column; gap: 16px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    opacity: 0; transform: translateY(20px);
+  }
+  .testi-card.visible { opacity: 1; transform: translateY(0); }
+  .testi-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: var(--white); }
+  .testi-stars { display: flex; gap: 3px; }
+  .testi-stars i { color: #ffb800; font-size: 12px; }
+  .testi-quote { font-size: 0.9375rem; color: var(--gray-700); line-height: 1.7; flex: 1; }
+  .testi-author { display: flex; align-items: center; gap: 12px; padding-top: 12px; border-top: 0.5px solid var(--gray-100); }
+  .testi-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: var(--gray-100); }
+  .testi-name { font-size: 0.875rem; font-weight: 600; color: var(--gray-900); }
+  .testi-tag  { font-size: 0.75rem; color: var(--gray-500); display: flex; align-items: center; gap: 4px; }
+  .testi-tag i { color: var(--nitro); font-size: 11px; }
+
+  /* ─── Trust Bar ──────────────────────────────────────────────────── */
+  .trust-section {
+    background: var(--gray-900); padding: 80px 0; text-align: center;
+  }
+  .trust-section .t-title { color: var(--white); }
+  .trust-section .t-body { color: rgba(255,255,255,0.55); max-width: 500px; margin: 16px auto 40px; }
+  .trust-badges {
+    display: flex; align-items: center; justify-content: center; gap: 32px; flex-wrap: wrap;
+  }
+  .trust-badge {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-md); padding: 14px 20px;
+  }
+  .trust-badge i { color: rgba(255,255,255,0.4); font-size: 18px; }
+  .trust-badge span { font-size: 0.875rem; color: rgba(255,255,255,0.6); font-weight: 500; }
+
+  /* ─── Footer ─────────────────────────────────────────────────────── */
+  footer {
+    background: var(--gray-50); border-top: 0.5px solid var(--gray-100);
+    padding: 60px 0 40px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;
+  }
+  .footer-brand p { font-size: 0.875rem; color: var(--gray-500); margin-top: 10px; max-width: 240px; line-height: 1.6; }
+  .footer-col h4 { font-size: 0.8125rem; font-weight: 600; color: var(--gray-900); margin-bottom: 14px; letter-spacing: -0.005em; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-col ul a { font-size: 0.875rem; color: var(--gray-500); text-decoration: none; transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--gray-900); }
+  .footer-bottom {
+    padding-top: 24px; border-top: 0.5px solid var(--gray-100);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;
+    gap: 12px;
+  }
+  .footer-bottom p { font-size: 0.8125rem; color: var(--gray-300); }
+  .footer-socials { display: flex; gap: 16px; }
+  .footer-socials a { color: var(--gray-300); font-size: 16px; text-decoration: none; transition: color 0.2s; }
+  .footer-socials a:hover { color: var(--nitro); }
+
+  /* ─── Animations ─────────────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.6; }
+  }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #30d158;
+    animation: pulse 2s ease-in-out infinite; display: inline-block;
+  }
+
+  /* ─── Responsive ─────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    section { padding: 72px 0; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: block; }
+    .featured-card { grid-template-columns: 1fr; min-height: unset; }
+    .featured-right { padding: 36px 24px; min-height: 260px; }
+    .balance-widget { width: 100%; max-width: 280px; }
+    .loyalty-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stat-row { gap: 28px; }
+    .featured-left { padding: 36px 28px; }
+    .featured-left h2 { font-size: 2rem; }
+    .claim-type-grid { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .trust-badges { flex-direction: column; align-items: stretch; }
+    .how-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .services-more { grid-template-columns: 1fr; }
+  }
+
+  /* ─── Scroll reveal helper ───────────────────────────────────────── */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  NAVIGATION                                                  ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <span class="logo-icon"><i class="fa-brands fa-discord"></i></span>
+      NitroSnipe
+    </a>
+    <ul class="nav-links">
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#member-credits">Credits</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+    </ul>
+    <a href="#services" class="nav-cta">Get Started</a>
+    <button class="nav-hamburger" aria-label="Open menu">
+      <i class="fa-solid fa-bars" style="font-size:18px;color:var(--gray-700);"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  HERO                                                        ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span class="live-dot"></span>
+      Live Service. Instant Delivery.
+    </div>
+    <h1 class="t-display hero-headline">
+      <span id="total-nitros" class="count-num"></span>&nbsp;Total Nitros<br>Delivered
+    </h1>
+    <p class="t-body hero-sub">
+      The most trusted Discord Nitro sniping service. Fully automated. Goes straight to your personal Nitro Balance.
+    </p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary">
+        <i class="fa-solid fa-bolt"></i>
+        Start Sniping
+      </a>
+      <a href="#how-it-works" class="btn-secondary">
+        Learn how it works
+        <i class="fa-solid fa-chevron-right" style="font-size:12px;"></i>
+      </a>
+    </div>
+    <div class="hero-stat-row">
+      <div class="hero-stat">
+        <div class="num">99.7%</div>
+        <div class="lbl">Snipe success rate</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">&lt; 50ms</div>
+        <div class="lbl">Average claim time</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">24/7</div>
+        <div class="lbl">Always watching</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">4,200+</div>
+        <div class="lbl">Happy members</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  HOW IT WORKS                                               ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="how-section" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <p class="t-caption">The process</p>
+      <h2 class="t-title" style="margin-top:8px;">Effortless.<br>Automatic. Yours.</h2>
+      <p class="t-body" style="max-width:480px;margin-top:14px;">
+        Our system monitors thousands of channels around the clock, captures freshly generated Nitro codes the moment they appear, and deposits them directly into your Nitro Balance. No manual work required.
+      </p>
+    </div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-icon purple"><i class="fa-solid fa-satellite-dish"></i></div>
+        <h3>Always scanning</h3>
+        <p>Our bots continuously scan hundreds of Discord servers for freshly generated Nitro gift codes, with sub-50ms reaction times.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon blue"><i class="fa-solid fa-bolt"></i></div>
+        <h3>Lightning-fast claim</h3>
+        <p>The moment a valid code appears, it's claimed automatically, before anyone else can react. You don't lift a finger.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon green"><i class="fa-solid fa-piggy-bank"></i></div>
+        <h3>Lands in your Balance</h3>
+        <p>Every sniped Nitro flows straight into your personal Nitro Balance. Redeem it, gift it, or let it stack. On your terms.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon amber"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Safe by design</h3>
+        <p>We never ask for your password. The Nitro Balance system is the same mechanism Discord uses internally. No risk to your account.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SERVICES                                                    ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="services-section" id="services">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="t-caption">Services</p>
+      <h2 class="t-title" style="margin-top:8px;">One Balance.<br>Endless Nitro.</h2>
+      <p class="t-body" style="max-width:500px;margin-top:14px;">Choose how you snipe. Every claim lands straight in your Nitro Balance — 3 credits equals one full month of Nitro.</p>
+    </div>
+
+    <!-- Two claim type cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" class="claim-type-grid">
+
+      <!-- Chance Drop -->
+      <div class="how-card reveal" style="border:0.5px solid var(--gray-100);padding:36px 32px;border-radius:var(--radius-lg);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <div class="how-icon blue" style="margin-bottom:0;"><i class="fa-solid fa-shuffle"></i></div>
+          <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:var(--blue-light);color:var(--blue);padding:4px 10px;border-radius:980px;">1 Credit</span>
+        </div>
+        <h3 style="font-size:1.25rem;margin-bottom:8px;">Chance Drop</h3>
+        <p style="font-size:0.9375rem;color:var(--gray-500);line-height:1.65;margin-bottom:20px;">A single snipe attempt with randomised Nitro tier — you may receive Nitro Basic or full Nitro Boost. Great for building your Balance affordably.</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--gray-500);">
+            <i class="fa-solid fa-circle-check" style="color:#30d158;font-size:13px;"></i> Nitro Basic or Nitro Boost — randomised
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--gray-500);">
+            <i class="fa-solid fa-circle-check" style="color:#30d158;font-size:13px;"></i> Delivered instantly to your Balance
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--gray-500);">
+            <i class="fa-solid fa-circle-check" style="color:#30d158;font-size:13px;"></i> 1 credit = 1 claim
+          </div>
+        </div>
+      </div>
+
+      <!-- Assured Boost -->
+      <div class="how-card reveal" style="border:2px solid var(--nitro);padding:36px 32px;border-radius:var(--radius-lg);position:relative;">
+        <div style="position:absolute;top:-13px;left:28px;background:var(--nitro);color:white;font-size:0.6875rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 12px;border-radius:980px;">Most Popular</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <div class="how-icon purple" style="margin-bottom:0;"><i class="fa-solid fa-bullseye"></i></div>
+          <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:var(--nitro-light);color:var(--nitro);padding:4px 10px;border-radius:980px;">5 Credits</span>
+        </div>
+        <h3 style="font-size:1.25rem;margin-bottom:8px;">Assured Boost</h3>
+        <p style="font-size:0.9375rem;color:var(--gray-500);line-height:1.65;margin-bottom:20px;">A precision snipe targeted exclusively at full Nitro Boost codes. When it's claimed, it is always Nitro Boost — no chance, no compromise.</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--gray-500);">
+            <i class="fa-solid fa-circle-check" style="color:#30d158;font-size:13px;"></i> <strong style="color:var(--gray-700);">Guaranteed</strong> full Nitro Boost only
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--gray-500);">
+            <i class="fa-solid fa-circle-check" style="color:#30d158;font-size:13px;"></i> Priority claim queue
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--gray-500);">
+            <i class="fa-solid fa-circle-check" style="color:#30d158;font-size:13px;"></i> 5 credits = 1 targeted claim
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured: Nitro Balance widget card -->
+    <div class="featured-card" id="featured-card">
+      <div class="featured-left">
+        <div>
+          <div class="featured-badge">
+            <i class="fa-solid fa-star" style="font-size:10px;"></i>
+            Featured Service
+          </div>
+          <h2>Nitro Balance</h2>
+          <p>
+            Sniped Nitro lands in your personal Balance automatically. Redeem on your terms, apply it to your own subscription, gift it to a friend, or let months accumulate. Your Nitro, your rules.<br><br>
+            <span style="font-size:0.875rem;color:var(--gray-300);">3 credits = 1 month of Nitro</span>
+          </p>
+        </div>
+        <div class="featured-actions">
+          <a href="#" class="btn-nitro">
+            <i class="fa-solid fa-wallet" style="margin-right:6px;"></i>
+            Redeem Now
+          </a>
+          <a href="#" class="btn-link">
+            Learn more
+            <i class="fa-solid fa-arrow-right" style="font-size:12px;"></i>
+          </a>
+        </div>
+      </div>
+      <div class="featured-right">
+        <div class="balance-widget">
+          <div class="bw-label">Nitro Balance</div>
+          <div class="bw-amount">
+            <span class="bw-num">3</span>
+            <span class="bw-unit">Months</span>
+          </div>
+          <div class="bw-sub">≈ 90 days of Nitro available</div>
+          <div class="balance-bar"><div class="balance-bar-fill"></div></div>
+          <div class="balance-row">
+            <span class="br-label">Next delivery</span>
+            <span class="br-value">Automatic</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature stubs -->
+    <div class="services-more" style="margin-top:16px;">
+      <div class="service-stub reveal" style="opacity:1;border-color:var(--gray-100);border-style:solid;">
+        <i class="fa-solid fa-gift stub-icon" style="color:var(--nitro);"></i>
+        <p style="font-weight:600;color:var(--gray-700);font-size:0.9375rem;">Nitro Gifting</p>
+        <p style="color:var(--gray-500);">Send Nitro months to friends directly from your Balance.</p>
+        <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#30d158;">Available Now</span>
+      </div>
+      <div class="service-stub reveal" style="opacity:1;border-color:var(--gray-100);border-style:solid;animation-delay:0.1s">
+        <i class="fa-solid fa-chart-line stub-icon" style="color:var(--nitro);"></i>
+        <p style="font-weight:600;color:var(--gray-700);font-size:0.9375rem;">Balance Analytics</p>
+        <p style="color:var(--gray-500);">Track your Nitro history, delivery schedule, and savings over time.</p>
+        <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#30d158;">Available Now</span>
+      </div>
+      <div class="service-stub reveal" style="animation-delay:0.2s">
+        <i class="fa-solid fa-rotate stub-icon"></i>
+        <p style="font-weight:600;color:var(--gray-400);font-size:0.9375rem;">Auto Restock</p>
+        <p>Set a minimum Balance threshold and we top up your credits automatically when you run low.</p>
+        <span style="font-size:0.75rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--gray-300);">Coming Soon</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  MEMBER CREDITS (Loyalty)                                    ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="loyalty-section" id="member-credits">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="t-caption">Member Credits</p>
+      <h2 class="t-title" style="margin-top:8px;">The more you claim,<br>the more you earn.</h2>
+      <p class="t-body" style="max-width:480px;margin-top:14px;">
+        Your tier is determined by the total lifetime claims purchased on your account. More claims means a higher tier, and higher tiers unlock better perks, bonuses, and priority access automatically.
+      </p>
+    </div>
+    <div class="loyalty-grid">
+      <div class="loyalty-visual reveal">
+        <p style="font-size:0.8125rem;font-weight:600;color:var(--gray-500);margin-bottom:20px;letter-spacing:0.04em;text-transform:uppercase;">Tier by Lifetime Claims</p>
+        <div class="tier-cards">
+          <div class="tier-card bronze">
+            <div class="tier-left">
+              <div class="tier-icon b"><i class="fa-solid fa-medal"></i></div>
+              <div>
+                <div class="tier-name">Copper</div>
+                <div class="tier-req">1 – 9 claims</div>
+              </div>
+            </div>
+            <div class="tier-bonus">Standard</div>
+          </div>
+          <div class="tier-card silver">
+            <div class="tier-left">
+              <div class="tier-icon s"><i class="fa-solid fa-shield"></i></div>
+              <div>
+                <div class="tier-name">Silver</div>
+                <div class="tier-req">10 – 24 claims</div>
+              </div>
+            </div>
+            <div class="tier-bonus">+5% bonus credits</div>
+          </div>
+          <div class="tier-card gold">
+            <div class="tier-left">
+              <div class="tier-icon g"><i class="fa-solid fa-crown"></i></div>
+              <div>
+                <div class="tier-name">Gold</div>
+                <div class="tier-req">25 – 49 claims</div>
+              </div>
+            </div>
+            <div class="tier-bonus">+12% bonus credits</div>
+          </div>
+          <div class="tier-card diamond">
+            <div class="tier-left">
+              <div class="tier-icon d"><i class="fa-solid fa-gem"></i></div>
+              <div>
+                <div class="tier-name">Diamond</div>
+                <div class="tier-req">50+ claims</div>
+              </div>
+            </div>
+            <div class="tier-bonus">+20% bonus credits</div>
+          </div>
+        </div>
+      </div>
+      <div class="loyalty-text reveal">
+        <h3 class="t-section">Everything Credits unlock</h3>
+        <ul class="loyalty-perks">
+          <li>
+            <div class="perk-icon"><i class="fa-solid fa-rotate-right" style="font-size:12px;"></i></div>
+            <div class="perk-text">
+              <h4>Failed snipe refund</h4>
+              <p>If a claim attempt fails for any reason, the credit is returned to your account automatically. No questions, no forms.</p>
+            </div>
+          </li>
+          <li>
+            <div class="perk-icon"><i class="fa-solid fa-calendar-check" style="font-size:12px;"></i></div>
+            <div class="perk-text">
+              <h4>Loyalty Credit Bonus</h4>
+              <p>For every 25 credits you add, we automatically top up your account with 3 extra credits. Our way of saying thank you.</p>
+            </div>
+          </li>
+          <li>
+            <div class="perk-icon"><i class="fa-solid fa-user-shield" style="font-size:12px;"></i></div>
+            <div class="perk-text">
+              <h4>Dedicated support</h4>
+              <p>Silver and above members get a private support channel with a guaranteed one-hour response.</p>
+            </div>
+          </li>
+          <li>
+            <div class="perk-icon" style="background:linear-gradient(135deg,#5865f2,#a78bfa);"><i class="fa-solid fa-gem" style="font-size:12px;color:white;"></i></div>
+            <div class="perk-text">
+              <h4 style="color:var(--nitro);">Diamond: double-fire sniping</h4>
+              <p>Every claim you purchase fires two simultaneous snipe attempts. If both land, you keep both. Two chances. One credit. The highest hit rate we offer.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  TESTIMONIALS                                                ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="testimonials-section" id="testimonials">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <p class="t-caption">Community</p>
+      <h2 class="t-title" style="margin-top:8px;">Loved by the Community</h2>
+      <p class="t-body" style="max-width:460px;margin:14px auto 0;">
+        Thousands of Discord users trust their Nitro Balance to NitroSnipe. Here's what a few of them have to say.
+      </p>
+    </div>
+    <div class="testimonials-grid" id="testi-grid">
+      <!-- Testimonials inserted by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  TRUST BAR                                                   ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="trust-section">
+  <div class="container">
+    <h2 class="t-title">Built on trust.<br>Designed for peace of mind.</h2>
+    <p class="t-body">No passwords. No personal data. Just Nitro in your Balance.</p>
+    <div class="trust-badges">
+      <div class="trust-badge">
+        <i class="fa-solid fa-lock"></i>
+        <span>Zero credential access</span>
+      </div>
+      <div class="trust-badge">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>24/7 automated delivery</span>
+      </div>
+      <div class="trust-badge">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Verified by 4,200+ members</span>
+      </div>
+      <div class="trust-badge">
+        <i class="fa-solid fa-headset"></i>
+        <span>Live support on Discord</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  FOOTER                                                      ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="#" style="display:inline-flex;">
+          <span class="logo-icon"><i class="fa-brands fa-discord"></i></span>
+          NitroSnipe
+        </a>
+        <p>The premium Discord Nitro sniping service. Automated, secure, and built for the community.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Nitro Balance</a></li>
+          <li><a href="#">Member Credits</a></li>
+          <li><a href="#">Nitro Gifting</a></li>
+          <li><a href="#">Bulk Plans</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Discord Server</a></li>
+          <li><a href="#">Status Page</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Copyright &copy; 2025 NitroSnipe. All rights reserved.</p>
+      <div class="footer-socials">
+        <a href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+        <a href="#" aria-label="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  JAVASCRIPT                                                  ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<script>
+/* ── Counter: starts at 353, +5 per day, GMT+1 ─────────────────── */
+(function() {
+  const BASE = 353;
+  const BASE_DATE = new Date('2025-01-01T00:00:00+01:00');
+  const nowGMT1 = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
+  const msPerDay = 86400000;
+  const daysDiff = Math.floor((nowGMT1 - BASE_DATE) / msPerDay);
+  const total = BASE + Math.max(0, daysDiff) * 5;
+
+  const el = document.getElementById('total-nitros');
+
+  /* Animate count-up */
+  let start = null;
+  const duration = 1600;
+  const from = Math.max(0, total - 80);
+
+  function tick(ts) {
+    if (!start) start = ts;
+    const progress = Math.min((ts - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (total - from) * ease).toLocaleString();
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+/* ── Nav scroll effect ──────────────────────────────────────────── */
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 30);
+}, { passive: true });
+
+/* ── Scroll reveal ──────────────────────────────────────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const delay = entry.target.dataset.delay || 0;
+      setTimeout(() => entry.target.classList.add('visible'), delay * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.how-card, .testi-card, .reveal, #featured-card').forEach((el, i) => {
+  el.dataset.delay = i;
+  observer.observe(el);
+});
+
+/* ── Testimonials with Discord usernames & avatars ──────────────── */
+const testimonials = [
+  {
+    username: 'voidwalker_.px',
+    discriminator: '#4821',
+    quote: "Been using NitroSnipe for 6 months. My Nitro Balance is sitting at 9 months. Completely effortless — I literally forgot it was running.",
+    stars: 5
+  },
+  {
+    username: 'nachtfalter',
+    discriminator: '#0392',
+    quote: "The Member Credits system is genuinely clever. Got a free month just from being loyal. Feels like a real perk, not a gimmick.",
+    stars: 5
+  },
+  {
+    username: 'sol.exe',
+    discriminator: '#7714',
+    quote: "I was skeptical at first but I've accumulated 4 months of Nitro without spending anything extra. The setup took 2 minutes.",
+    stars: 5
+  },
+  {
+    username: 'crystalline.arc',
+    discriminator: '#2250',
+    quote: "Support answered in under an hour when I had a question. Diamond tier is actually worth it for the priority queue alone.",
+    stars: 5
+  },
+  {
+    username: 'phantomgrid',
+    discriminator: '#9901',
+    quote: "The balance system is brilliant. I don't have to decide immediately — I just let the months stack and redeem when I actually need them.",
+    stars: 5
+  }
+];
+
+const grid = document.getElementById('testi-grid');
+/* Picsum Photos — free, realistic, varied faces; seed is stable per user */
+const avatarSeeds = [1012, 1025, 1062, 1074, 1084];
+
+testimonials.forEach((t, i) => {
+  /* 80x80 photo from picsum — deterministic per seed, looks like a real person */
+  const avatarUrl = `https://picsum.photos/seed/${avatarSeeds[i]}/80/80`;
+
+  const card = document.createElement('div');
+  card.className = 'testi-card';
+  card.innerHTML = `
+    <div class="testi-stars">
+      ${Array(t.stars).fill('<i class="fa-solid fa-star"></i>').join('')}
+    </div>
+    <p class="testi-quote">"${t.quote}"</p>
+    <div class="testi-author">
+      <img class="testi-avatar" src="${avatarUrl}" alt="${t.username}" />
+      <div>
+        <div class="testi-name">${t.username}</div>
+        <div class="testi-tag">
+          <i class="fa-brands fa-discord"></i>
+          Discord Member
+        </div>
+      </div>
+    </div>
+  `;
+  grid.appendChild(card);
+  observer.observe(card);
+});
+
+/* ── Stagger cards with delay ───────────────────────────────────── */
+document.querySelectorAll('.testi-card').forEach((c, i) => {
+  c.style.transitionDelay = `${i * 80}ms`;
+});
+document.querySelectorAll('.how-card').forEach((c, i) => {
+  c.style.transitionDelay = `${i * 80}ms`;
+});
+</script>
+</body>
+</html>
