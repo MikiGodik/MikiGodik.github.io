@@ -290,7 +290,7 @@ function Services() {
         <div className="claim-type-grid">
           {/* Chance Drop */}
           <div className="claim-card reveal">
-            <span className="claim-cost-badge blue">1 Credit</span>
+            <span className="claim-cost-badge blue">3 Credits</span>
             <div className="claim-card-icon blue">
               <i className="fa-solid fa-shuffle" />
             </div>
@@ -298,9 +298,9 @@ function Services() {
             <p>A randomised snipe. You may receive Nitro Basic or full Nitro Boost. Great for building your Balance affordably.</p>
             <div className="claim-check"><i className="fa-solid fa-circle-check" /> Nitro Basic or Nitro Boost, randomised</div>
             <div className="claim-check"><i className="fa-solid fa-circle-check" /> Delivered instantly to your Balance</div>
-            <div className="claim-check"><i className="fa-solid fa-circle-check" /> 1 credit = 1 claim</div>
+            <div className="claim-check"><i className="fa-solid fa-circle-check" /> 3 Credits = 1 claim</div>
             <div className="claim-card-cost" style={{ marginTop: 16 }}>
-              <i className="fa-solid fa-gem" /> 1 credit per claim
+              <i className="fa-solid fa-gem" /> 3 Credits per claim
             </div>
           </div>
 
