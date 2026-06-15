@@ -2,6 +2,9 @@
   "name": "nitro-vault",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,6 +15,4 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }
-"engines": {
-  "node": "18.x"
 }
